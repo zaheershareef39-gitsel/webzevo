@@ -50,6 +50,34 @@ document.addEventListener("DOMContentLoaded", () => {
     splitTextToSpans('.split-text');
 
     // ==========================================
+    // Mobile Menu Toggle Logic
+    // ==========================================
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navPill = document.querySelector('.nav-pill');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    if (mobileMenuBtn && navPill) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenuBtn.classList.toggle('active');
+            navPill.classList.toggle('active');
+            // Toggle body scroll
+            if (navPill.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuBtn.classList.remove('active');
+                navPill.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+    }
+
+    // ==========================================
     // 2. Custom Cursor & Magnetic Effects
     // ==========================================
     const cursor = document.querySelector('.custom-cursor');
@@ -138,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, '-=0.6')
             .fromTo('.highlight-stroke', { strokeDasharray: '0, 500', opacity: 0 }, { strokeDasharray: '500, 0', opacity: 1, duration: 1.5, ease: 'power2.out' }, '-=0.5')
             .fromTo('.hero-subheadline', { filter: 'blur(10px)', y: 30, opacity: 0 }, { filter: 'blur(0px)', y: 0, opacity: 1, duration: 1 }, '-=0.8')
-            .fromTo('.hero-cta button', { filter: 'blur(10px)', y: 30, opacity: 0 }, { filter: 'blur(0px)', y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, '-=0.6')
+            .fromTo('.hero-cta .btn', { filter: 'blur(10px)', y: 30, opacity: 0 }, { filter: 'blur(0px)', y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, '-=0.6')
             .fromTo('.trust-section', { filter: 'blur(10px)', opacity: 0 }, { filter: 'blur(0px)', opacity: 1, duration: 1 }, '-=0.4')
             
             // Right Side Dashboard Animations
