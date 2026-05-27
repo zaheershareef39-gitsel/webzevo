@@ -62,12 +62,16 @@ body {
 a {
     color: inherit;
     text-decoration: none;
-    cursor: none;
 }
 
 button {
-    cursor: none;
     font-family: inherit;
+}
+
+@media (min-width: 1025px) and (pointer: fine) {
+    a, button {
+        cursor: none;
+    }
 }
 
 /* ==========================================
@@ -109,46 +113,54 @@ h1, h2, h3, h4, h5, h6 {
 /* ==========================================
    Custom Cursor
    ========================================== */
-.custom-cursor {
-    width: 10px;
-    height: 10px;
-    background-color: var(--color-primary);
-    border-radius: 50%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, background-color 0.3s;
-    /* Removed mix-blend-mode for better visibility on white */
+.custom-cursor, .cursor-follower {
+    display: none;
 }
 
-.cursor-follower {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(0, 71, 255, 0.3);
-    border-radius: 50%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s, height 0.3s, border-color 0.3s;
-}
+@media (min-width: 1025px) and (pointer: fine) {
+    .custom-cursor {
+        display: block;
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-primary);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s, background-color 0.3s;
+        /* Removed mix-blend-mode for better visibility on white */
+    }
 
-.cursor-hover .custom-cursor {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(0, 71, 255, 0.1);
-    border: 1px solid var(--color-primary);
-}
+    .cursor-follower {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(0, 71, 255, 0.3);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
 
-.cursor-hover .cursor-follower {
-    width: 80px;
-    height: 80px;
-    border-color: transparent;
+    .cursor-hover .custom-cursor {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(0, 71, 255, 0.1);
+        border: 1px solid var(--color-primary);
+    }
+
+    .cursor-hover .cursor-follower {
+        width: 80px;
+        height: 80px;
+        border-color: transparent;
+    }
 }
 
 /* ==========================================

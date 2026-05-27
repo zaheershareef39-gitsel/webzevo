@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Check if the device is a mobile or touch-input device
+    const isMobile = window.innerWidth <= 1024 || window.matchMedia("(pointer: coarse)").matches;
+
     // ==========================================
     // 2. Custom Cursor & Magnetic Effects
     // ==========================================
@@ -84,58 +87,60 @@ document.addEventListener("DOMContentLoaded", () => {
     const follower = document.querySelector('.cursor-follower');
     const magneticElements = document.querySelectorAll('.hover-magnetic');
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let cursorX = window.innerWidth / 2;
-    let cursorY = window.innerHeight / 2;
-    let followerX = window.innerWidth / 2;
-    let followerY = window.innerHeight / 2;
+    if (!isMobile && cursor && follower) {
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+        let followerX = window.innerWidth / 2;
+        let followerY = window.innerHeight / 2;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
 
-    const renderCursor = () => {
-        cursorX += (mouseX - cursorX) * 0.2;
-        cursorY += (mouseY - cursorY) * 0.2;
-        
-        followerX += (mouseX - followerX) * 0.1;
-        followerY += (mouseY - followerY) * 0.1;
-
-        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-        follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
-
-        requestAnimationFrame(renderCursor);
-    };
-    renderCursor();
-
-    magneticElements.forEach(el => {
-        el.addEventListener('mousemove', (e) => {
-            const rect = el.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
+        const renderCursor = () => {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
             
-            gsap.to(el, {
-                x: x * 0.3,
-                y: y * 0.3,
-                duration: 0.4,
-                ease: 'power2.out'
-            });
-        });
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
 
-        el.addEventListener('mouseleave', () => {
-            gsap.to(el, {
-                x: 0,
-                y: 0,
-                duration: 0.7,
-                ease: 'elastic.out(1, 0.3)'
-            });
-        });
+            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
 
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
+            requestAnimationFrame(renderCursor);
+        };
+        renderCursor();
+
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                gsap.to(el, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.4,
+                    ease: 'power2.out'
+                });
+            });
+
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.7,
+                    ease: 'elastic.out(1, 0.3)'
+                });
+            });
+
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+    }
 
     // ==========================================
     // 3. Initial Loading Sequence
@@ -143,7 +148,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const loaderTL = gsap.timeline({
         onComplete: () => {
             document.body.classList.remove('loading');
-            document.body.style.cursor = 'none'; 
+            if (!isMobile) {
+                document.body.style.cursor = 'none'; 
+            }
         }
     });
 
